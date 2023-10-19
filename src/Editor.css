@@ -1,0 +1,65 @@
+* {
+  overflow: hidden;
+}
+
+.container {
+  min-width: 32%;
+  margin: 0 auto;
+  border: 1px solid green;
+  position: relative;
+  background: transparent;
+}
+
+.images-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 1px solid green;
+  position: relative;
+  height: 80vh;
+  /* background: #dfd0d0; */
+  /* background: red; */
+  /* clip-path: polygon(24.25% 24.26%, 58.39% 5.75%, 65.89% -0.07%, 59.26% 16.58%, 74.43% 23.26%, 84.7% 34.11%, 83.7% 31.2%, 74.26% 85.22%, 43.8% 94.22%, 12.66% 74.22%, 34.18% 93.17%, 10.9% 42.2%); */
+  /* background-color: transparent; */
+  /* background-image: url('./assets/white.png');
+  background-repeat: no-repeat;
+  background-position: center center; */
+}
+
+.mask1 {
+  -webkit-mask-image: url(./assets/white.png);
+  mask-image: url(./assets/white.png);
+  -webkit-mask-repeat: no-repeat;
+  background: red;
+  mask-position: center;
+  -webkit-mask-position: center;
+ -webkit-mask-size:contain; 
+  mask-repeat:no-repeat;
+}
+
+.mask1 {
+  border: 1px solid blue;
+  width: 500px;
+  height: 500px;
+  /* margin: 5px; */
+  /* margin-left: 20px; */
+}
+
+.backg-image {
+  /* width: 300px;
+  height: auto; */
+  /* padding-top: 8vh; */
+  position: absolute;
+  margin: 0 auto;
+  z-index: -99;
+  /* width: 500px; */
+  /* height: 500px; */
+  /* border: 1px solid blue; */
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+}

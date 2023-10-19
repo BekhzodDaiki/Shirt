@@ -1,0 +1,9 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar__variation {
+  display: flex;
+}
+
