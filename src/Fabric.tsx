@@ -1,19 +1,43 @@
-import React, { useEffect, useRef } from 'react';
-import * as fabric from 'fabric'; // v6
-// import { fabric } from 'fabric'; // v5
+import React, { Component } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Stage, Layer, Text } from 'react-konva';
 
-export const FabricJSCanvas = () => {
-  const canvasEl = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const options = { ... };
-    const canvas = new fabric.Canvas(canvasEl.current, options);
-    // make the fabric.Canvas instance available to your app
-    updateCanvasContext(canvas);
-    return () => {
-      updateCanvasContext(null);
-      canvas.dispose();
-    }
-  }, []);
+class App extends Component {
+  state = {
+    isDragging: false,
+    x: 50,
+    y: 50,
+  };
 
-  return <canvas width="300" height="300" ref={canvasEl}/>;
-};
+  render() {
+    return (
+      <Stage width={window.innerWidth} height={window.innerHeight}>
+        <Layer>
+          <Text
+            text="Draggable Textasd"
+            x={this.state.x}
+            y={this.state.y}
+            draggable
+            fill={this.state.isDragging ? 'green' : 'black'}
+            onDragStart={() => {
+              this.setState({
+                isDragging: true,
+              });
+            }}
+            onDragEnd={(e) => {
+              this.setState({
+                isDragging: false,
+                x: e.target.x(),
+                y: e.target.y(),
+              });
+            }}
+          />
+        </Layer>
+      </Stage>
+    );
+  }
+}
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<App />);
