@@ -1,6 +1,15 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { render } from "react-dom";
-import { Stage, Layer, Group, Text, Rect, Transformer } from "react-konva";
+import {
+  Image,
+  Stage,
+  Layer,
+  Group,
+  Text,
+  Rect,
+  Transformer,
+} from "react-konva";
+import img from "./assets/blue.png";
 
 class TransformerComponent extends React.Component {
   componentDidMount() {
@@ -65,6 +74,62 @@ class TransformerComponent extends React.Component {
   }
 }
 
+class URLImage extends React.Component {
+  state = {
+    image: null,
+  };
+  componentDidMount() {
+    this.loadImage();
+  }
+  // @ts-ignore
+  componentDidUpdate(oldProps) {
+    // @ts-ignore
+    if (oldProps.src !== this.props.src) {
+      this.loadImage();
+    }
+  }
+  componentWillUnmount() {
+    // @ts-ignore
+    this.image.removeEventListener("load", this.handleLoad);
+  }
+  loadImage() {
+    // save to "this" to remove "load" handler on unmount
+    // @ts-ignore
+    this.image = new window.Image();
+    // @ts-ignore
+    this.image.src = this.props.src;
+    // @ts-ignore
+    this.image.addEventListener("load", this.handleLoad);
+  }
+  handleLoad = () => {
+    // after setState react-konva will update canvas and redraw the layer
+    // because "image" property is changed
+    this.setState({
+      // @ts-ignore
+      image: this.image,
+    });
+    // if you keep same image object during source updates
+    // you will have to update layer manually:
+    // this.imageNode.getLayer().batchDraw();
+  };
+  render() {
+    return (
+      <Image
+        x={this.props.x}
+        y={this.props.y}
+        // @ts-ignore
+        image={this.state.image}
+        ref={(node) => {
+          // @ts-ignore
+          this.imageNode = node;
+        }}
+        draggable
+        
+      />
+    );
+  }
+}
+
 class App extends Component {
   state = {
     selectedShapeName: "",
@@ -123,6 +188,8 @@ class App extends Component {
               shadowBlur={5}
               shadowOpacity={0.3}
             /> */}
+            {/* @ts-ignore */}
+            {/* <URLImage src="https://konvajs.org/assets/yoda.jpg" x={150} /> */}
             <Text
               name="text"
               fontSize={16}
@@ -133,6 +200,17 @@ class App extends Component {
               align="center"
               text="some text sadsadsads"
             />
+          </Group>
+          <Group
+            name="group"
+            x={225}
+            y={295}
+            width={120}
+            height={60}
+            fill="red"
+            draggable
+          >
+            <URLImage name="test" src="https://konvajs.org/assets/yoda.jpg" x={150} />
           </Group>
           <TransformerComponent
             // @ts-ignore

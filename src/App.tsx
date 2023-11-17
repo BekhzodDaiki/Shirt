@@ -1,5 +1,7 @@
 import './App.css';
+import BlogRocket from './BlogRocker';
 import Editor from './Editor';
+import ImageTemp from './ImageTemp';
 import Konva from './Konva';
 import Selected from './Selected';
 import Sidebar from './Sidebar';
@@ -9,7 +11,9 @@ const App = () => {
     <div className="container">
       {/* <Sidebar /> */}
       {/* <Editor /> */}
-      <Konva />
+      {/* <Konva /> */}
+      {/* <BlogRocket /> */}
+      <ImageTemp />
       {/* <Selected /> */}
     </div>
   );
