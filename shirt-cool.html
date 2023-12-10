@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabric.js Resizable and Draggable Objects with Separate Text, Image Upload, and User Text Input</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/3.6.6/fabric.min.js"></script>
+</head>
+<body>
+    <input type="file" id="imageInput" accept="image/*">
+    <input type="text" id="userTextInput" placeholder="Type text here">
+    <button onclick="addText()">Add Text</button>
+    <canvas id="canvas" width="500" height="500" style="border:1px solid #ccc;"></canvas>
+
+    <script>
+        // Initialize Fabric.js canvas
+        var canvas = new fabric.Canvas('canvas');
+
+        // Function to create a resizable and draggable rectangle
+        function createResizableRectangle(left, top, width, height) {
+            var rect = new fabric.Rect({
+                left: left,
+                top: top,
+                width: width,
+                height: height,
+                fill: 'blue',
+                borderColor: 'black',
+                cornerColor: 'black',
+                cornerSize: 10,
+                transparentCorners: false,
+                hasRotatingPoint: false,
+                lockRotation: true,
+                lockScalingFlip: true,
+                lockSkewingX: true,
+                lockSkewingY: true,
+                selectable: true
+            });
+
+            // Make the rectangle resizable and draggable
+            rect.setControlsVisibility({
+                tl: true, tr: true, br: true, bl: true,
+                mt: false, mb: false, ml: false, mr: false,
+                mtr: false
+            });
+
+            rect.set({
+                hasRotatingPoint: false
+            });
+
+            canvas.add(rect);
+
+            return rect;
+        }
+
+        // Function to create a resizable and draggable text
+        function createResizableText(left, top, text) {
+            var textObj = new fabric.Textbox(text, {
+                fontSize: 16,
+                left: left,
+                top: top,
+                width: 200, // Specify a default width
+                originX: 'left',
+                originY: 'top',
+                selectable: true,
+                evented: true
+            });
+
+            // Make the text resizable and draggable
+            textObj.setControlsVisibility({
+                tl: true, tr: true, br: true, bl: true,
+                mt: true, mb: true, ml: true, mr: true,
+                mtr: true
+            });
+
+            canvas.add(textObj);
+
+            return textObj;
+        }
+
+        // Function to handle image and text upload
+        function handleImageUpload(event) {
+            var fileInput = event.target;
+            var file = fileInput.files[0];
+
+            if (file) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    fabric.Image.fromURL(e.target.result, function (img) {
+                        img.set({
+                            left: 50,
+                            top: 50,
+                            scaleX: 0.5,
+                            scaleY: 0.5
+                        });
+
+                        canvas.add(img);
+
+                        // Create a resizable and draggable text
+                        var text = createResizableText(50, 50, 'Resizable Text');
+
+                        canvas.renderAll();
+                    });
+                };
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Add event listener for image upload
+        var imageInput = document.getElementById('imageInput');
+        imageInput.addEventListener('change', handleImageUpload);
+
+        // Function to add user-inputted text to the canvas
+        function addText() {
+            var userTextInput = document.getElementById('userTextInput').value;
+            if (userTextInput) {
+                // Create a resizable and draggable text using user input
+                createResizableText(50, 50, userTextInput);
+            }
+        }
+
+        // Create a resizable and draggable rectangle
+        var rectangle = createResizableRectangle(50, 50, 100, 100);
+
+    </script>
+</body>
+</html>
